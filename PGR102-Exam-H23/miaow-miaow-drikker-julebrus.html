@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miaow Miaow drikker julebrus</title>
+    <!-- CSS skal ikke røres -->
+    <link rel="stylesheet" href="css-skal-ikke-roeres/miaow-miaow-drikker-julebrus.css">
+</head>
+<body>
+
+    <div id="container"><!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+
+        <h1 id="main-heading">Miaow Miaow drikker julebrus</h1>
+
+        <img id="background-image" src="images/at-the-table.png">
+
+        <img id="cat-left" src="images/cat-left.png">
+
+        <img id="cat-right" src="images/cat-right.png">
+
+        <img id="waiter" src="images/waiter.png">
+
+        <div id="glass-1">
+            <div id="glass-1-content"></div><!-- Innholdet i glasset på venstre side -->
+        </div>
+
+        <div id="glass-2">
+            <div id="glass-2-content"></div><!-- Innholdet i glasset på høyre side -->
+        </div>
+
+    </div>
+
+    <div id="output-div">
+        <p>Her skrives det ut hva som skjer underveis</p>
+    </div><!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+
+    
+    <script>/* I denne script-tagen skal du kode JavaScript (ikke i ekstern fil) */
+    //variabler
+    var kelner = document.getElementById("waiter");
+    var glass1 = document.getElementById("glass-1-content");
+    var glass2 = document.getElementById("glass-2-content");
+    var venstreKatt = document.getElementById("cat-left");
+    var høyreKatt = document.getElementById("cat-right");
+    var outputDiv = document.getElementById("output-div");
+    
+    var helleBrus = 40;
+    var drikkBrus = 20;
+    var mengdeBrus1 = 0;
+    var mengdeBrus2 = 0;
+    
+    var meldingsBoks = [];
+    var melding = 0;
+    
+    
+    //funksjoner 
+    function fyllGlass() {
+        if (mengdeBrus1 <= 60 || mengdeBrus2 <= 60) {
+            if (mengdeBrus1 < 60) {
+                mengdeBrus1 += helleBrus; 
+                glass1.style.height = mengdeBrus1 + "px";
+            } else {
+                mengdeBrus1 = 80;
+                glass1.style.height = mengdeBrus1 + "px";
+            }
+
+            if (mengdeBrus2 < 60) {
+                mengdeBrus2 += helleBrus;
+                glass2.style.height = mengdeBrus2 + "px";
+            } else {
+                mengdeBrus1 = 80;
+                glass2.style.height = mengdeBrus2 + "px";
+            }
+            
+            melding++;
+            meldingsBoks.push(`Melding: ${melding}: Kelneren helte julebrus i begge glassene.`)
+            meldingUtskrift()
+        } else {
+            melding++;
+            meldingsBoks.push(`Melding: ${melding}: Glassene er fulle.`)
+            meldingUtskrift()
+        }
+    }
+
+    function drikkVenstreGlass() {
+        if (mengdeBrus1 === 0) {
+            melding++;
+            meldingsBoks.push(`Melding: ${melding}: Glasset til venstre er tomt. Trykk på kelner!`);
+            meldingUtskrift();
+        } else if (mengdeBrus1 >= 0) {
+            mengdeBrus1 -= drikkBrus;
+            glass1.style.height = mengdeBrus1 + "px";
+            melding++;
+            meldingsBoks.push(`Melding: ${melding}: Katten til venstre drakk av sitt glass! mmmmmm`);
+            meldingUtskrift();
+        } else {
+            mengdeBrus1 = 0;
+            melding++;
+            meldingsBoks.push(`Melding: ${melding}: Glasset for katten til venstre er tomt. Kelner må helle i mer!`);
+            meldingUtskrift();
+        }
+    }
+
+    
+    function drikkHøyreKatt() {
+        if (mengdeBrus2 === 0) {
+            melding++;
+            meldingsBoks.push(`Melding: ${melding}: Glasset til høyre er tomt. Trykk på kelner!`);
+            meldingUtskrift();
+        } else if (mengdeBrus2 >= 0) {
+            mengdeBrus2 -= drikkBrus;
+            glass2.style.height = mengdeBrus2 + "px";
+            melding++;
+            meldingsBoks.push(`Melding: ${melding}: Katten til høyre drakk av sitt glass! mmmmmm`);
+            meldingUtskrift();
+        } else {
+            mengdeBrus2 = 0;
+            melding++;
+            meldingsBoks.push(`Melding: ${melding}: Glasset for katten til høyre er tomt. Kelner må helle i mer!`);
+            meldingUtskrift();
+        }
+    }
+
+    function meldingUtskrift() {
+        outputDiv.innerHTML = "";
+        for (var i = 0; i < meldingsBoks.length; i++) {
+            outputDiv.innerHTML += "<p>" + meldingsBoks[i] + "</p>"; 
+        }
+    }
+
+    //knapper
+    kelner.onclick = fyllGlass;
+    venstreKatt.onclick = drikkVenstreGlass;
+    høyreKatt.onclick = drikkHøyreKatt;
+        
+    </script>
+    
+</body>
+</html>

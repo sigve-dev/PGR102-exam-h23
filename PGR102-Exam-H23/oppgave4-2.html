@@ -1,0 +1,184 @@
+<!--Hvis du velger utvidelsesoppgave kopier all koden fra originalen hit slik at du beholder både original og utvidet kode.-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kappløpet</title>
+    <!-- CSS skal ikke røres -->
+    <link rel="stylesheet" href="css-skal-ikke-roeres/kapploepet.css">
+</head>
+<body>
+
+    <div id="container"><!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+
+        <h1 id="main-heading">Kappløpet</h1>
+        <h2 id="winner-status">Løpet er i gang</h2>
+
+        <input id="move-miaows-left-leg-btn" type="button" value="Beveg Miaows venstre ben">
+        <input id="move-miaows-right-leg-btn" type="button" value="Beveg Miaows høyre ben">
+
+        <div id="pond"></div>
+        <div id="finish-line"></div>
+        <img id="building" src="images/building-2.png">
+
+        <img id="eskilpadde" src="images/eskilpadde.png">
+
+        <img id="miaow-miaow" src="images/miaow-miaow-runner.png">
+        
+        <img id="geir-geit" src="images/geirgeit.png">          
+
+    </div><!-- DET ER IKKE LOV Å ENDRE PÅ NOE I HTML-KODEN! -->
+    
+
+    <script>/* I denne script-tagen skal du kode JavaScript (ikke i ekstern fil) */
+
+        /*
+            Beskrivelse av setInterval-funksjonen.
+            ---
+            setInterval(function(){
+                // Kode som skal skje for hver x millisekunder plasseres her
+            }, 1000); // 1000 betyr 1000 millisekunder som betyr 1 sekund. 
+        */
+
+        //variabler 
+
+        var eskilPadde = document.getElementById("eskilpadde");
+        var eskilPosisjon = 0;
+        var eskilPaddeHoyde = 550;
+        var nyEskilIntervall;
+
+        var geirGeit = document.getElementById("geir-geit");
+        var geirGeitPosisjon = 0;
+
+        var miaowMiaow = document.getElementById("miaow-miaow");
+        var miaowVenstre = document.getElementById("move-miaows-left-leg-btn");
+        var miaowHøyre = document.getElementById("move-miaows-right-leg-btn");
+        var miaowPosisjon = 0; 
+
+        var vinnerStatus = document.getElementById("winner-status");
+        var knapp1 = true;
+        var knapp2 = false;
+
+
+        //funksjoner 
+        var eskilIntervallen = setInterval(function() {
+             if (geirGeitPosisjon >= 400 || miaowPosisjon >= 400 && eskilPosisjon <= 800) {
+                    eskilPadde.style.top = eskilPaddeHoyde + "px";
+                    clearInterval(eskilIntervallen);
+
+                    nyEskilIntervall = setInterval(function() {
+                        if (eskilPosisjon >= 800) {
+                            vinnerStatus.innerHTML = `<h2>Gratulerer Eskilpadde! Du vant!</h2>`;
+                            clearInterval(eskilIntervallen);
+                            clearInterval(geirIntervallen);
+                            clearInterval(nyEskilIntervall);
+                        } else {
+                            eskilPosisjon += 3;
+                            eskilPadde.style.left = eskilPosisjon + "px";
+                        }
+                    }, 50);
+                    
+            } else if (eskilPosisjon >= 800) {
+                    vinnerStatus.innerHTML = `<h2>Gratulerer Eskilpadde! Du vant!</h2>`;
+                    clearInterval(eskilIntervallen);
+                    clearInterval(geirIntervallen);
+                    clearInterval(nyEskilIntervall);
+
+            } else {
+                eskilPosisjon += 3;
+                eskilPadde.style.left = eskilPosisjon + "px";
+            }
+
+        }, 1000);
+
+
+        var geirIntervallen = setInterval(function(){ 
+            if (geirGeitPosisjon >= 800) {
+                vinnerStatus.innerHTML = `<h2>Gratulerer GeirGeit! Du vant!</h2>`; 
+                clearInterval(eskilIntervallen);
+                clearInterval(geirIntervallen);
+                clearInterval(nyEskilIntervall);
+
+            } else {
+            var geitBevegelse = Math.floor(Math.random() * 8) + 3;
+
+                if (geitBevegelse <= 3) {
+                geirGeitPosisjon -= 10;
+                geirGeit.style.left = geirGeitPosisjon + "px";
+
+                } else {
+                geirGeitPosisjon += 12;
+                geirGeit.style.left = geirGeitPosisjon + "px";
+                }
+            }
+        }, 500);
+
+        function bevegVenstre() {
+            if (miaowPosisjon >= 800) {
+                vinnerStatus.innerHTML = `<h2>Gratulerer Miaow Miaow! Du vant!</h2>`;
+                clearInterval(eskilIntervallen);
+                clearInterval(geirIntervallen);
+                clearInterval(nyEskilIntervall);
+
+            } else {
+                if (knapp1 === true && knapp2 === false) {
+                var miaowBevegelse = Math.floor(Math.random() * 4);
+
+                    if (miaowBevegelse === 0) {
+                        miaowPosisjon += 6;
+                        miaowMiaow.style.left = miaowPosisjon + "px";
+                    } else if (miaowBevegelse === 1) {
+                        miaowPosisjon += 7;
+                        miaowMiaow.style.left = miaowPosisjon + "px";
+                    } else if (miaowBevegelse === 2) {
+                        miaowPosisjon += 8;
+                        miaowMiaow.style.left = miaowPosisjon + "px";
+                    }  else {
+                        miaowPosisjon += 9;
+                        miaowMiaow.style.left = miaowPosisjon + "px";
+                    }     
+                    knapp1 = false;
+                    knapp2 = true;       
+                }      
+            }
+        }
+
+        function bevegHøyre() {
+            if (miaowPosisjon >= 800) {
+                clearInterval(eskilIntervallen);
+                clearInterval(geirIntervallen);
+                clearInterval(nyEskilIntervall);
+                
+            } else {
+                if (knapp2 === true && knapp1 === false) {
+                var miaowBevegelse = Math.floor(Math.random() * 4);
+
+                    if (miaowBevegelse === 0) {
+                        miaowPosisjon += 6;
+                        miaowMiaow.style.left = miaowPosisjon + "px";
+                    } else if (miaowBevegelse === 1) {
+                        miaowPosisjon += 7;
+                        miaowMiaow.style.left = miaowPosisjon + "px";
+                    } else if (miaowBevegelse === 2) {
+                        miaowPosisjon += 8;
+                        miaowMiaow.style.left = miaowPosisjon + "px";
+                    }  else {
+                        miaowPosisjon += 9;
+                        miaowMiaow.style.left = miaowPosisjon + "px";
+                    }    
+                    knapp1 = true;
+                    knapp2 = false; 
+                }              
+            }
+        }
+
+        //knapper
+        miaowVenstre.onclick = bevegVenstre; 
+        miaowHøyre.onclick = bevegHøyre;
+
+    </script>
+    
+</body>
+</html>
